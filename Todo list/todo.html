@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">Mijn dag planning</h2>
+  <input type="text" id="myInput" placeholder="Wat staat er op de planning?">
+  <span id="myBtn" onclick="newElement()" class="addBtn">Add</span>
+</div>
+
+
+
+
+<ul id="myUL">
+ 
+</ul>
+
+
+<script>
+
+// Get the input field
+var input = document.getElementById("myInput");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("myBtn").click();
+  }
+});
+
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+// Edit an existing task
+var editTask = function() {
+  console.log("Edit Task...");
+  
+  var listItem = this.parentNode;
+  
+  var editInput = listItem.querySelector("input[type=text]")
+  var label = listItem.querySelector("label");
+  
+  var containsClass = listItem.classList.contains("editMode");
+    //if the class of the parent is .editMode 
+  if(containsClass) {
+      //switch from .editMode 
+      //Make label text become the input's value
+    label.innerText = editInput.value;
+  } else {
+      //Switch to .editMode
+      //input value becomes the label's text
+    editInput.value = label.innerText;
+  }
+  
+    // Toggle .editMode on the parent
+  listItem.classList.toggle("editMode");
+ 
+}
+
+</script>
+
+<div id="myDIV2" class="header2">
+  <h2 style="margin:5px">Afgeronde taken</h2>
+  
+
+
+</div>
+
+</body>
+</html>
